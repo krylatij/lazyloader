@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LazyProviderLoader", "LazyProviderLoader\LazyProviderLoader.csproj", "{27C07B32-84FD-4B9B-AAA2-D5CCA505A1C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27C07B32-84FD-4B9B-AAA2-D5CCA505A1C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C07B32-84FD-4B9B-AAA2-D5CCA505A1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C07B32-84FD-4B9B-AAA2-D5CCA505A1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C07B32-84FD-4B9B-AAA2-D5CCA505A1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35A53468-97F5-4DEC-AE42-DC43A3CDFBD8}
+	EndGlobalSection
+EndGlobal
