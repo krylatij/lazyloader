@@ -28,10 +28,14 @@ namespace LazyProviderLoader
                     o.IncludeScopes = false;
                     o.TimestampFormat = "hh:mm:ss ";
                 }));
-           //     services.AddSingleton<IStorageFactory, WaitersStorageFactory>();
+           
                 services.AddSingleton<IAppCache, CachingService>();
 
+                //     services.AddSingleton<IStorageFactory, WaitersStorageFactory>();
                 services.AddSingleton<IStorageFactory, LazyCacheStorageFactory>();
+                services.AddSingleton<IStorageFactory, SemaphoreSlimStorageFactory>();
+
+
                 services.AddSingleton<IStorageSlotProvider, StorageSlotProvider>();
                 services.AddScoped<IInvoiceService, InvoiceService>();
 
