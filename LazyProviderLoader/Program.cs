@@ -4,8 +4,10 @@ using System.Security.Authentication.ExtendedProtection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+using LazyCache;
 using LazyProviderLoader.Services;
 using LazyProviderLoader.Storage;
+using LazyProviderLoader.Storage.Provider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -18,8 +20,7 @@ namespace LazyProviderLoader
             try
             {
                 var services = new ServiceCollection();
-
-               
+                
                 services.AddMemoryCache();
                 services.AddLogging(x => x.AddConsole(o =>
                 {
@@ -27,7 +28,11 @@ namespace LazyProviderLoader
                     o.IncludeScopes = false;
                     o.TimestampFormat = "hh:mm:ss ";
                 }));
-                services.AddSingleton<IStorageFactory, StorageFactory>();
+           //     services.AddSingleton<IStorageFactory, WaitersStorageFactory>();
+                services.AddSingleton<IAppCache, CachingService>();
+
+                services.AddSingleton<IStorageFactory, LazyCacheStorageFactory>();
+                services.AddSingleton<IStorageSlotProvider, StorageSlotProvider>();
                 services.AddScoped<IInvoiceService, InvoiceService>();
 
                 var provider = services.BuildServiceProvider();

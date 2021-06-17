@@ -3,31 +3,27 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LazyProviderLoader.Storage.Provider;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace LazyProviderLoader.Storage
 {
-    public class StorageFactory : IStorageFactory
+    public class WaitersStorageFactory : IStorageFactory
     {
+        private readonly IStorageSlotProvider _storageSlotProvider;
         private readonly IMemoryCache _cache;
 
         private readonly ConcurrentDictionary<int, Lazy<Task>> _waiters = new ConcurrentDictionary<int, Lazy<Task>>();
         
-        private readonly ILoggerFactory _loggerFactory;
-        private readonly ILogger<StorageFactory> _logger;
+        private readonly ILogger<WaitersStorageFactory> _logger;
 
-        private class StorageSlot
+        public WaitersStorageFactory(IStorageSlotProvider storageSlotProvider, 
+            IMemoryCache cache, 
+            ILogger<WaitersStorageFactory> logger)
         {
-            public IStorage Storage { get; set; }
-
-            public HashSet<string> InvoiceIds { get; set; }
-        }
-
-        public StorageFactory(IMemoryCache cache, ILoggerFactory loggerFactory, ILogger<StorageFactory> logger)
-        {
+            _storageSlotProvider = storageSlotProvider;
             _cache = cache;
-            _loggerFactory = loggerFactory;
             _logger = logger;
         }
 
@@ -40,7 +36,7 @@ namespace LazyProviderLoader.Storage
             {
                 return entry.Storage;
             }
-            
+
             // checking if we have initialization task started for this session
             if (_waiters.TryGetValue(sessionId, out var existingInitializationTask))
             {
@@ -74,7 +70,7 @@ namespace LazyProviderLoader.Storage
 
             try
             {
-                var slot = await GetStorageSlotAsync(sessionId);
+                var slot = await _storageSlotProvider.GetAsync(sessionId);
 
                 var entryOptions = new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMilliseconds(Constants.StorageExpirationMs))
@@ -151,24 +147,6 @@ namespace LazyProviderLoader.Storage
             DisposeSlotSafe(slot);
 
             return true;
-        }
-
-        private async Task<StorageSlot> GetStorageSlotAsync(int sessionId)
-        {
-            await Task.Delay(Constants.StorageCreationDelayMs);
-
-            var storageLogger = _loggerFactory.CreateLogger<Storage>();
-
-            var slot = new StorageSlot
-            {
-                // hardcoded invoices
-                InvoiceIds = new HashSet<string> { "invoice1", "invoice2", "invoice3" },
-                Storage = new Storage(sessionId, storageLogger)
-            };
-
-            _logger.LogInformation($"Slot created for session {sessionId}.");
-
-            return slot;
         }
     }
 }

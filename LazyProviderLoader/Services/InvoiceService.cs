@@ -23,13 +23,13 @@ namespace LazyProviderLoader.Services
             try
             {
                 _logger.LogInformation(
-                    $"Got storage for session {sessionId} with storageId: {storage.GetStorageId()}.");
+                    $"Got storage for session {sessionId} with storageId '{storage.GetStorageId()}' and invoice '{invoiceId}'.");
 
-                await Task.Delay(1000);
+                await Task.Delay(Constants.InvoiceProcessingDelayMs);
 
                 var storageSession = storage.GetSessionId();
 
-                _logger.LogInformation($"Processed invoice {invoiceId} in session: {storageSession}.");
+                _logger.LogInformation($"Processed invoice '{invoiceId}' in session: '{storageSession}'.");
             }
             catch (Exception e)
             {
