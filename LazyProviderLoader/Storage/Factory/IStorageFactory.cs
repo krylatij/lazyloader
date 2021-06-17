@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace LazyProviderLoader.Storage
+namespace LazyProviderLoader.Storage.Factory
 {
     public interface IStorageFactory
     {

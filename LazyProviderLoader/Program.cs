@@ -7,6 +7,7 @@ using System.Windows.Markup;
 using LazyCache;
 using LazyProviderLoader.Services;
 using LazyProviderLoader.Storage;
+using LazyProviderLoader.Storage.Factory;
 using LazyProviderLoader.Storage.Provider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LazyProviderLoader.Storage.Provider;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
-namespace LazyProviderLoader.Storage
+namespace LazyProviderLoader.Storage.Factory
 {
     public class WaitersStorageFactory : IStorageFactory
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LazyProviderLoader.Storage
+namespace LazyProviderLoader.Storage.Provider
 {
     public class StorageSlot
     {

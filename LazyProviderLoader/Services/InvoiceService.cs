@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LazyProviderLoader.Storage;
+using LazyProviderLoader.Storage.Factory;
 using Microsoft.Extensions.Logging;
 
 namespace LazyProviderLoader.Services
