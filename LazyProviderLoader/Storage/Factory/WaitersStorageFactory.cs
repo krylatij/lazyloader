@@ -36,20 +36,27 @@ namespace LazyProviderLoader.Storage.Factory
                 return entry.Storage;
             }
 
-            // checking if we have initialization task started for this session
-            if (_waiters.TryGetValue(sessionId, out var existingInitializationTask))
+            try
             {
-                await existingInitializationTask.Value;
-            }
-            else
-            {
-                var task = _waiters.GetOrAdd(sessionId, k => new Lazy<Task>(() => InitStorageSlot(k)));
-
-                if (task.Value.Status == TaskStatus.Created)
+                // checking if we have initialization task started for this session
+                if (_waiters.TryGetValue(sessionId, out var existingInitializationTask))
                 {
-                    task.Value.Start();
+                    await existingInitializationTask.Value;
                 }
-                await task.Value;
+                else
+                {
+                    var task = _waiters.GetOrAdd(sessionId, k => new Lazy<Task>(() => InitStorageSlot(k)));
+
+                    if (task.Value.Status == TaskStatus.Created)
+                    {
+                        task.Value.Start();
+                    }
+                    await task.Value;
+                }
+            }
+            finally
+            {
+                _waiters.TryRemove(sessionId, out var removedTask);
             }
 
             if (_cache.TryGetValue(key, out StorageSlot createdStorage))
